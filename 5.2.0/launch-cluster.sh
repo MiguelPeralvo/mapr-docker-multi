@@ -3,14 +3,14 @@
 MAPRVER="5.2.0"
 # Docker Checks
 if [[ -z $(which docker)  ]] ; then
-        echo " docker could not be found on this server. Please install Docker version 1.6.0 or later."
+        echo " docker could not be found on this server. Please install Docker version 1.12.0 or later."
 	echo " If it is already installed Please update the PATH env variable." 
         exit
 fi
 
 dv=$(docker --version | awk '{ print $3}' | sed 's/,//')
-if [[ $dv < 1.6.0 ]] ; then
-        echo " Docker version installed on this server : $dv.  Please install Docker version 1.6.0 or later."
+if [[ $dv < 1.12.0 ]] ; then
+        echo " Docker version installed on this server : $dv.  Please install Docker version 1.12.0 or later."
         exit
 fi
 
