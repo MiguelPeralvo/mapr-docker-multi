@@ -65,7 +65,7 @@ if [[ ${NUMBEROFNODES} -lt ${#disks[@]} ]] ; then
 	cldbdisks=$(join , ${disks[0]} ${disks[@]:$NUMBEROFNODES})
 fi
 
-cldb_cid=$(docker run -d --name control --privileged -p 8443:8443 -p 80:80 -p 8080:8080 -v /home/centos/git/mapr-docker-multi/5.2.0/maprvolumes:/volumes -h ${CLUSTERNAME}c1 -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
+cldb_cid=$(docker run -d --name control --privileged -p 7222:7222 -p 23:22 -p 8443:8443 -p 80:80 -p 8080:8080 -v /home/centos/git/mapr-docker-multi/5.2.0/maprvolumes:/volumes -h ${CLUSTERNAME}c1 -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
 container_ids[0]=$cldb_cid
 
 sleep 10
@@ -78,7 +78,7 @@ sleep 20
 i=1
 while [[ $i -lt $NUMBEROFNODES ]]
 do
-  data_cid=$(docker run -d --name data${i} --privileged -v /home/centos/git/mapr-docker-multi/5.2.0/maprvolumes:/volumes -h ${CLUSTERNAME}d${i} -e "CLDBIP=${cldbip}" -e "DISKLIST=${disks[$i]}" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-data-cent67:${MAPRVER})
+  data_cid=$(docker run -d --name data${i} -p 7223:7222 -p 24:22 --privileged -v /home/centos/git/mapr-docker-multi/5.2.0/maprvolumes:/volumes -h ${CLUSTERNAME}d${i} -e "CLDBIP=${cldbip}" -e "DISKLIST=${disks[$i]}" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-data-cent67:${MAPRVER})
   container_ids[$i]=$data_cid
   sleep 10
   dip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${data_cid} )
