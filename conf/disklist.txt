@@ -1,2 +1,2 @@
-/dev/disk0s6
-/dev/disk0s8
+/volumes/disk1
+/volumes/disk2
