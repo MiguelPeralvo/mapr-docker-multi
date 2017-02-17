@@ -65,7 +65,7 @@ if [[ ${NUMBEROFNODES} -lt ${#disks[@]} ]] ; then
 	cldbdisks=$(join , ${disks[0]} ${disks[@]:$NUMBEROFNODES})
 fi
 
-cldb_cid=$(docker run -d --privileged -h ${CLUSTERNAME}c1 -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
+cldb_cid=$(docker run -d --privileged -p 8443:8443 -p 80:80 -p 8080:8080 -h ${CLUSTERNAME}c1 -e "DISKLIST=$cldbdisks" -e "CLUSTERNAME=${CLUSTERNAME}" -e "MEMTOTAL=${MEMTOTAL}" docker.io/maprtech/mapr-control-cent67:${MAPRVER})
 container_ids[0]=$cldb_cid
 
 sleep 10
